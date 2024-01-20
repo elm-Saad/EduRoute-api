@@ -41,7 +41,6 @@ app.use(xss());
 app.use('/',swaggerUI.serve,swaggerUI.setup(swaggerDocument))
 
 
-
 // routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authenticateUser, coursesRouter);
