@@ -38,10 +38,8 @@ app.use(cors());
 app.use(xss());
 
 
-app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(swaggerDocument));
-app.get('/', (req, res) => {
-  res.send('<h1>Jobs APIs and more stuff</h1><a href="/api-docs">docs</a>');
-});
+app.use('/',swaggerUI.serve,swaggerUI.setup(swaggerDocument))
+
 
 
 // routes
