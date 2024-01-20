@@ -8,11 +8,13 @@ const auth = async (req, res, next) => {
   if (!authHeader || !authHeader.startsWith('Bearer')) {
     throw new UnauthenticatedError('Authentication invalid')
   }
+  // get clean token
   const token = authHeader.split(' ')[1]
 
   try {
+    // verify user token 
     const payload = jwt.verify(token, process.env.JWT_SECRET)
-    // attach the user to the job routes
+    // attach the user to the Course routes
     req.user = { userId: payload.userId, name: payload.name }
     next()
   } catch (error) {

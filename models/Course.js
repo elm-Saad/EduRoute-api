@@ -1,20 +1,20 @@
 const mongoose = require('mongoose')
 
-const JobSchema = new mongoose.Schema(
+const CourseSchema = new mongoose.Schema(
   {
-    company: {
+    instructor: {
       type: String,
       required: [true, 'Please provide company name'],
       maxlength: 50,
     },
-    position: {
+    course_name: {
       type: String,
       required: [true, 'Please provide position'],
       maxlength: 100,
     },
-    status: {
+    course_status: {
       type: String,
-      enum: ['interview', 'declined', 'pending'],
+      enum: ['finished', 'pending', 'in progress'],
       default: 'pending',
     },
     createdBy: {
@@ -26,4 +26,4 @@ const JobSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-module.exports = mongoose.model('Job', JobSchema)
+module.exports = mongoose.model('Course', CourseSchema)
