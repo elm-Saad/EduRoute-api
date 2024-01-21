@@ -10,7 +10,11 @@ const getAllCourses = async (req, res) => {
 
   const courses = await Course.find({createdBy:req.user.userId}).sort('createdAt')
 
-  res.status(StatusCodes.OK).json({courses,count:courses.length})
+  res.status(StatusCodes.OK).json({
+    courses ,
+    count:courses.length,
+    owner:req.user.name,
+  })
 }
 
 const getSingleCourse = async (req, res) => {
@@ -42,12 +46,12 @@ const createCourse = async (req, res) => {
   const  course = await Course.create(req.body)
 
 
-  res.status(StatusCodes.CREATED).json({ course })
+  res.status(StatusCodes.CREATED).json({ course})
 
 }
 
 const updateCourse = async (req, res) => {
-  // get id of the job and the userId and body of the req
+  // get id of the Course and the userId and body of the req
   const {
     user:{userId},
     params:{id:CourseId},
@@ -88,7 +92,7 @@ const deleteCourse = async (req, res) => {
     throw new NotFoundError('No job with is '+ CourseId)
   }
 
-  res.status(StatusCodes.OK).json({msg:'DONE'})
+  res.status(StatusCodes.OK).json({msg:'course deleted'})
 }
 
 module.exports = {
