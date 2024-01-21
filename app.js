@@ -37,8 +37,10 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 
+app.use(express.static('./public'))
+
 app.get('/',(req,res)=>{
-  res.json({msg:'this is a message'})
+  res.send('<a href="https://eduroute-api.onrender.com/api-docs">view docs</a>')
 })
 
 app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(swaggerDocument))

@@ -1,29 +1,37 @@
 openapi: 3.0.0
 info:
-  title: Jobs API
-  contact: {}
+  title: EduRoute
+  contact:
+    name: Saad
+    email: saad.elm2002@gmail.com
   version: '1.0'
 servers:
-  - url: https://jobs-api-06.herokuapp.com/api/v1
-    variables: {}
+- url: https://eduroute-api.onrender.com/api/v1
+  variables: {}
 paths:
   /auth/register:
     post:
       tags:
-        - Auth
-      summary: Register User
-      operationId: RegisterUser
+      - Authentication
+      summary: register
+      description: ''
+      operationId: register
       parameters: []
       requestBody:
         description: ''
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterUserRequest'
+              allOf:
+              - $ref: '#/components/schemas/registerrequest'
+              - example:
+                  name: saad
+                  email: saad1@gmail.com
+                  password: NewPassword
             example:
-              name: bob
-              email: bob@gmail.com
-              password: secret
+              name: saad
+              email: saad1@gmail.com
+              password: NewPassword
         required: true
       responses:
         '200':
@@ -34,19 +42,23 @@ paths:
   /auth/login:
     post:
       tags:
-        - Auth
-      summary: Login User
-      operationId: LoginUser
+      - Authentication
+      summary: login
+      operationId: login
       parameters: []
       requestBody:
         description: ''
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginUserRequest'
+              allOf:
+              - $ref: '#/components/schemas/loginrequest'
+              - example:
+                  email: saad@gmail.com
+                  password: NewPassword
             example:
-              email: susan@gmail.com
-              password: secret
+              email: saad@gmail.com
+              password: NewPassword
         required: true
       responses:
         '200':
@@ -54,99 +66,113 @@ paths:
           headers: {}
       deprecated: false
       security: []
-  /jobs:
+  /courses/:
     post:
       tags:
-        - Jobs
-      summary: Create Job
-      operationId: CreateJob
+      - Courses
+      summary: createCourse
+      operationId: createCourse
       parameters: []
       requestBody:
         description: ''
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateJobRequest'
+              allOf:
+              - $ref: '#/components/schemas/createCourseRequest'
+              - example:
+                  instructor: astro
+                  course_name: course_name 1
+                  course_status: in progress
             example:
-              company: google
-              position: front-end developer
+              instructor: astro
+              course_name: course_name 1
+              course_status: in progress
         required: true
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
     get:
       tags:
-        - Jobs
-      summary: Get All Jobs
-      operationId: GetAllJobs
+      - Courses
+      summary: getAllCourses
+      operationId: getAllCourses
       parameters: []
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
-  /jobs/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-        required: true
-        description: The job ID
+      security:
+      - bearer: []
+  /courses/{id}:
     get:
       tags:
-        - Jobs
-      summary: Get Single Job
-      operationId: GetSingleJob
+      - Courses
+      summary: getSingleCourse
+      operationId: getSingleCourse
       parameters: []
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
-
+      security:
+      - bearer: []
     patch:
       tags:
-        - Jobs
-      summary: Update Job
-      operationId: UpdateJob
+      - Courses
+      summary: updateCourse
+      operationId: updateCourse
       parameters: []
       requestBody:
         description: ''
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateJobRequest'
+              allOf:
+              - $ref: '#/components/schemas/updateCourseRequest'
+              - example:
+                  instructor: saad
+                  course_name: course_name 1
+                  course_status: in progress
             example:
-              company: random
-              position: intern
+              instructor: saad
+              course_name: course_name 1
+              course_status: in progress
         required: true
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
     delete:
       tags:
-        - Jobs
-      summary: Delete Job
-      operationId: DeleteJob
+      - Courses
+      summary: deleteCourse
+      operationId: deleteCourse
       parameters: []
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
+      security:
+      - bearer: []
 components:
   schemas:
-    RegisterUserRequest:
-      title: RegisterUserRequest
+    registerrequest:
+      title: registerrequest
       required:
-        - name
-        - email
-        - password
+      - name
+      - email
+      - password
       type: object
       properties:
         name:
@@ -156,14 +182,14 @@ components:
         password:
           type: string
       example:
-        name: bob
-        email: bob@gmail.com
-        password: secret
-    LoginUserRequest:
-      title: LoginUserRequest
+        name: saad
+        email: saad1@gmail.com
+        password: NewPassword
+    loginrequest:
+      title: loginrequest
       required:
-        - email
-        - password
+      - email
+      - password
       type: object
       properties:
         email:
@@ -171,44 +197,69 @@ components:
         password:
           type: string
       example:
-        email: susan@gmail.com
-        password: secret
-    CreateJobRequest:
-      title: CreateJobRequest
+        email: saad@gmail.com
+        password: NewPassword
+    createCourseRequest:
+      title: createCourseRequest
       required:
-        - company
-        - position
+      - instructor
+      - course_name
+      - course_status
       type: object
       properties:
-        company:
+        instructor:
           type: string
-        position:
+        course_name:
+          type: string
+        course_status:
           type: string
       example:
-        company: google
-        position: front-end developer
-    UpdateJobRequest:
-      title: UpdateJobRequest
+        instructor: astro
+        course_name: course_name 1
+        course_status: in progress
+    deleteCourseRequest:
+      title: deleteCourseRequest
       required:
-        - company
-        - position
+      - instructor
+      - course_name
+      - course_status
       type: object
       properties:
-        company:
+        instructor:
           type: string
-        position:
+        course_name:
+          type: string
+        course_status:
           type: string
       example:
-        company: random
-        position: intern
+        instructor: astro 2
+        course_name: course_name 1
+        course_status: in progress
+    updateCourseRequest:
+      title: updateCourseRequest
+      required:
+      - instructor
+      - course_name
+      - course_status
+      type: object
+      properties:
+        instructor:
+          type: string
+        course_name:
+          type: string
+        course_status:
+          type: string
+      example:
+        instructor: saad
+        course_name: course_name 1
+        course_status: in progress
   securitySchemes:
-    httpBearer:
+    bearer:
       type: http
       scheme: bearer
-security:
-  - httpBearer: []
+security: []
 tags:
-  - name: Auth
-    description: ''
-  - name: Jobs
-    description: ''
+- name: Authentication
+  description: ''
+- name: Courses
+  description: ''
