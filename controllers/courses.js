@@ -31,7 +31,7 @@ const getSingleCourse = async (req, res) => {
    *handle CastError if (err.name === 'CastError') in the error-handler 
    */
   if(!singleCourse){
-    throw new NotFoundError('No job with is '+ CourseId)
+    throw new NotFoundError('No course with is '+ CourseId)
   }
 
   res.status(StatusCodes.OK).json({singleCourse})
@@ -70,14 +70,14 @@ const updateCourse = async (req, res) => {
   },req.body,{new: true, runValidators:true})
 
   if(!course){
-    throw new NotFoundError('No job with is '+ CourseId)
+    throw new NotFoundError('No course with is '+ CourseId)
   }
 
   res.status(StatusCodes.OK).json({course})
 }
 
 const deleteCourse = async (req, res) => {
-  // get id of the job and the userId and body of the req
+  // get id of the course and the userId and body of the req
   const {
     user:{userId},
     params:{id:CourseId},
@@ -89,7 +89,7 @@ const deleteCourse = async (req, res) => {
   })
 
   if(!course){
-    throw new NotFoundError('No job with is '+ CourseId)
+    throw new NotFoundError('No course with is '+ CourseId)
   }
 
   res.status(StatusCodes.OK).json({msg:'course deleted'})
