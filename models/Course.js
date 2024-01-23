@@ -14,7 +14,7 @@ const CourseSchema = new mongoose.Schema(
     },
     course_status: {
       type: String,
-      enum: ['finished', 'pending', 'in progress'],
+      enum: ['finished', 'pending', 'in_progress'],
       default: 'pending',
     },
     createdBy: {
@@ -22,6 +22,16 @@ const CourseSchema = new mongoose.Schema(
       ref: 'User',
       required: [true, 'Please provide user'],
     },
+    course_duration:{
+      type:String,
+      enum:['more then 10h','between 5h and 10h','between 1h and 5h','less then 1h'],
+      default:'more then 10h'
+     },
+     Gol:{
+      type:String,
+      default:'better person',
+      require:true,
+     }
   },
   { timestamps: true }
 )

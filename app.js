@@ -5,7 +5,6 @@ require('express-async-errors');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const cors = require('cors') 
-const rateLimiter = require('express-rate-limit');
 
 // swagger docs
 const swaggerUI = require('swagger-ui-express');
@@ -27,11 +26,7 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 
 app.use(express.json());
 
-app.set('trust proxy',1)
-app.use(rateLimiter({
-  windowMs: 15*60*1000,
-  max:100,
-}));
+
 
 app.use(helmet());
 app.use(cors());

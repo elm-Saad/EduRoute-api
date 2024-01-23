@@ -1,8 +1,15 @@
 openapi: 3.0.0
 info:
-  title: EduRoute
+  title: EduRoute-api
+  description: >-
+    EduRoute Explorer user-friendly Learning Path Tracker designed to help you organize, manage, and optimize your learning journey. Whether you're learning a new programming language, exploring online courses, or enhancing your skills.
+
+    Explorer at https://eduroute.netlify.app/
+
+
+    For developers, educators, and anyone eager to explore the inner workings of EduRoute Explorer, our API documentation is now available. Dive into the technical details, explore endpoints, and unleash the full capabilities of EduRoute by checking out our API documentation.
   contact:
-    name: Saad
+    name: saad
     email: saad.elm2002@gmail.com
   version: '1.0'
 servers:
@@ -12,9 +19,9 @@ paths:
   /auth/register:
     post:
       tags:
-      - Authentication
+      - auth route
       summary: register
-      description: ''
+      description: register user to the database, providing name, email, and password
       operationId: register
       parameters: []
       requestBody:
@@ -25,13 +32,13 @@ paths:
               allOf:
               - $ref: '#/components/schemas/registerrequest'
               - example:
-                  name: saad
-                  email: saad1@gmail.com
-                  password: NewPassword
+                  name: mouad
+                  email: mouad@gmail.com
+                  password: password
             example:
-              name: saad
-              email: saad1@gmail.com
-              password: NewPassword
+              name: mouad
+              email: mouad@gmail.com
+              password: password
         required: true
       responses:
         '200':
@@ -42,8 +49,9 @@ paths:
   /auth/login:
     post:
       tags:
-      - Authentication
+      - auth route
       summary: login
+      description: login user to the database, providing email and password
       operationId: login
       parameters: []
       requestBody:
@@ -54,11 +62,11 @@ paths:
               allOf:
               - $ref: '#/components/schemas/loginrequest'
               - example:
-                  email: saad@gmail.com
-                  password: NewPassword
+                  email: mouad@gmail.com
+                  password: password
             example:
-              email: saad@gmail.com
-              password: NewPassword
+              email: mouad@gmail.com
+              password: password
         required: true
       responses:
         '200':
@@ -66,11 +74,47 @@ paths:
           headers: {}
       deprecated: false
       security: []
+  /auth/updateUser:
+    patch:
+      tags:
+      - auth route
+      summary: updateProfile
+      description: update the profile of a user
+      operationId: updateProfile
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/updateProfileRequest'
+              - example:
+                  name: test
+                  lastName: user
+                  email: test_user@gmail.com
+                  password: test_password
+                  rol: testing
+            example:
+              name: test
+              lastName: user
+              email: test_user@gmail.com
+              password: test_password
+              rol: testing
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
   /courses/:
     post:
       tags:
-      - Courses
+      - courses route
       summary: createCourse
+      description: add a course to the database
       operationId: createCourse
       parameters: []
       requestBody:
@@ -81,13 +125,17 @@ paths:
               allOf:
               - $ref: '#/components/schemas/createCourseRequest'
               - example:
-                  instructor: astro
-                  course_name: course_name 1
-                  course_status: in progress
+                  instructor: Node.js
+                  course_name: course_name 2
+                  course_status: finished
+                  course_duration: more then 10h
+                  Gol: backend dev
             example:
-              instructor: astro
-              course_name: course_name 1
-              course_status: in progress
+              instructor: Node.js
+              course_name: course_name 2
+              course_status: finished
+              course_duration: more then 10h
+              Gol: backend dev
         required: true
       responses:
         '200':
@@ -98,8 +146,9 @@ paths:
       - bearer: []
     get:
       tags:
-      - Courses
+      - courses route
       summary: getAllCourses
+      description: get all courses from the database
       operationId: getAllCourses
       parameters: []
       responses:
@@ -112,8 +161,9 @@ paths:
   /courses/{id}:
     get:
       tags:
-      - Courses
+      - courses route
       summary: getSingleCourse
+      description: To get a course from the database, provide the course ID.
       operationId: getSingleCourse
       parameters: []
       responses:
@@ -125,8 +175,9 @@ paths:
       - bearer: []
     patch:
       tags:
-      - Courses
+      - courses route
       summary: updateCourse
+      description: To update a course from the database, provide the course ID.
       operationId: updateCourse
       parameters: []
       requestBody:
@@ -135,15 +186,19 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/updateCourseRequest'
+              - $ref: '#/components/schemas/UpdateCourseRequest'
               - example:
-                  instructor: saad
-                  course_name: course_name 1
-                  course_status: in progress
+                  instructor: physics
+                  course_name: course_name 2
+                  course_status: finished
+                  course_duration: more then 10h
+                  Gol: physics pro
             example:
-              instructor: saad
-              course_name: course_name 1
-              course_status: in progress
+              instructor: physics
+              course_name: course_name 2
+              course_status: finished
+              course_duration: more then 10h
+              Gol: physics pro
         required: true
       responses:
         '200':
@@ -152,10 +207,12 @@ paths:
       deprecated: false
       security:
       - bearer: []
+  /courses/{id}:
     delete:
       tags:
-      - Courses
+      - courses route
       summary: deleteCourse
+      description: To delete a course from the database, provide the course ID.
       operationId: deleteCourse
       parameters: []
       responses:
@@ -165,8 +222,124 @@ paths:
       deprecated: false
       security:
       - bearer: []
+  /courses/stats:
+    get:
+      tags:
+      - courses route
+      summary: getCoursesStats
+      description: retrieve the complete statistical data of all courses for a single user from the database
+      operationId: getCoursesStats
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses:
+    get:
+      tags:
+      - CoursesFiltering
+      summary: Filtering Courses
+      description: filter the data for courses based on the [name,status,duration] of the course.
+      operationId: FilteringCourses
+      parameters:
+      - name: search
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: false
+        schema:
+          type: string,number
+          example: Node.js
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /courses/65afabdb1b092434b09b1d9b:
+    get:
+      tags:
+      - testUser
+      summary: getSingleCourse
+      description: get a single course data as a test user
+      operationId: GetgetSingleCourse
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - testUser
+      summary: deleteCourse
+      description: delete a course from the database as a test user
+      operationId: DeletedeleteCourse
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    patch:
+      tags:
+      - testUser
+      summary: UpdateCourse
+      description: update a course as a test user
+      operationId: UpdateCourse
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateCourseRequest'
+              - example:
+                  instructor: Xtest
+                  course_name: no test
+                  course_status: pending
+                  course_duration: more then 10h
+                  Gol: anti test
+            example:
+              instructor: Xtest
+              course_name: no test
+              course_status: pending
+              course_duration: more then 10h
+              Gol: anti test
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
 components:
   schemas:
+    loginrequest:
+      title: loginrequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: test_user@gmail.com
+        password: test_password
     registerrequest:
       title: registerrequest
       required:
@@ -182,29 +355,43 @@ components:
         password:
           type: string
       example:
-        name: saad
-        email: saad1@gmail.com
-        password: NewPassword
-    loginrequest:
-      title: loginrequest
+        name: test
+        email: test_user@gmail.com
+        password: test_password
+    updateProfileRequest:
+      title: updateProfileRequest
       required:
+      - name
+      - lastName
       - email
       - password
+      - rol
       type: object
       properties:
+        name:
+          type: string
+        lastName:
+          type: string
         email:
           type: string
         password:
           type: string
+        rol:
+          type: string
       example:
-        email: saad@gmail.com
-        password: NewPassword
+        name: test
+        lastName: user
+        email: test_user@gmail.com
+        password: test_password
+        rol: testing
     createCourseRequest:
       title: createCourseRequest
       required:
       - instructor
       - course_name
       - course_status
+      - course_duration
+      - Gol
       type: object
       properties:
         instructor:
@@ -213,16 +400,24 @@ components:
           type: string
         course_status:
           type: string
+        course_duration:
+          type: string
+        Gol:
+          type: string
       example:
-        instructor: astro
-        course_name: course_name 1
-        course_status: in progress
-    deleteCourseRequest:
-      title: deleteCourseRequest
+        instructor: tester
+        course_name: testing
+        course_status: in_progress
+        course_duration: more then 10h
+        Gol: test pro
+    UpdateCourseRequest:
+      title: UpdateCourseRequest
       required:
       - instructor
       - course_name
       - course_status
+      - course_duration
+      - Gol
       type: object
       properties:
         instructor:
@@ -231,35 +426,50 @@ components:
           type: string
         course_status:
           type: string
+        course_duration:
+          type: string
+        Gol:
+          type: string
       example:
-        instructor: astro 2
-        course_name: course_name 1
-        course_status: in progress
-    updateCourseRequest:
-      title: updateCourseRequest
+        instructor: Xtest
+        course_name: no test
+        course_status: pending
+        course_duration: more then 10h
+        Gol: anti test
+    updatePofileRequest:
+      title: updatePofileRequest
       required:
-      - instructor
-      - course_name
-      - course_status
+      - name
+      - lastName
+      - email
+      - password
+      - rol
       type: object
       properties:
-        instructor:
+        name:
           type: string
-        course_name:
+        lastName:
           type: string
-        course_status:
+        email:
+          type: string
+        password:
+          type: string
+        rol:
           type: string
       example:
-        instructor: saad
-        course_name: course_name 1
-        course_status: in progress
+        name: mouad
+        lastName: elm
+        email: mouad@gmail.com
+        password: password
+        rol: front end dev
   securitySchemes:
     bearer:
       type: http
       scheme: bearer
 security: []
 tags:
-- name: Authentication
-  description: ''
-- name: Courses
+- name: auth route
+- name: courses route
+- name: CoursesFiltering
+- name: testUser
   description: ''
